@@ -1,0 +1,4 @@
+
+        [console_scripts]
+        monik-initdb=monik.initdb:main
+    

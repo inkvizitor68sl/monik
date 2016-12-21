@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Monik reports</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <style>
+    #events-tbl tr {
+      cursor: pointer;
+    }
+  </style>
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="container">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#monik-navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Monik</a>
+        </div>
+        {% if not args.lock: %}
+        <div class="collapse navbar-collapse" id="monik-navbar">
+          <form class="navbar-form navbar-right">
+            <div class="form-group" method="get">
+              <input type="text" class="form-control" id="hostname" name="hostname" value="{{args.hostname}}" placeholder="Host"/>
+              <input type="text" class="form-control" id="checkname" name="checkname" value="{{args.checkname}}" placeholder="Check" />
+              <input type="hidden" id="critical" name="critical" value="{{args.critical}}" />
+            </div>
+            <button type="submit" class="btn btn-default">Поиск</button>
+          </form>
+          <ul class="nav navbar-nav navbar-right">
+            <li {% if not args.critical: %} class="active" {% endif %}><a href="/?">All</a></li>
+            <li {% if args.critical: %} class="active" {% endif %}><a href="/?critical=1">Critical</a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+        {% endif %}
+      </div><!-- /.container-fluid -->
+    </nav>
+
+
+    <div id="monik-result" class="row">
+      {% if report.data: %}
+
+      {% if report.data == 'all ok': %}
+       <div class="col-md-4 col-md-offset-5 centered"><h1>Все хорошо</h1></div>
+      {% else: %}
+      {% if not args.lock: %}
+      <button class="btn btn-default btn-primary pull-right" id="set-downtime-btn">Downtime</button>
+      {% endif %}
+      <table class="table table-hover" id="events-tbl">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Hostname</th>
+            <th>Checkname</th>
+            <th>Status</th>
+            <th>Description</th>
+            <th>Update time</th>
+            <th>Downtime till</th>
+            <th>TTL</th>
+            <th>Ignore NODATA</th>
+            <th>Notify types</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for check in report.data %}
+          <tr class="{% if check.downtime_till > now %} active {% elif check.status|int > 1 %} danger {% elif check.status|int > 0 %} warning {% else %} success {% endif%}">
+            <td><input type="checkbox" data-hostname="{{check.hostname}}" data-checkname="{{check.checkname}}"/></td>
+            <td>{{check.hostname}}</td>
+            <td>{{check.checkname}}</td>
+            <td>{{check.status}}</td>
+            <td>{{check.description}}</td>
+            <td>{{check.update_date}}</td>
+            <td>{{check.downtime_till}}</td>
+            <td>{{check.ttl}}</td>
+            <td>{{check.ignorenodata}}</td>
+            <td>{{check.notify_types}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+      {% else: %}
+      <div class="col-md-4 col-md-offset-4"><h1>Ничего не найдено</h1></div>
+      {% endif %}
+    </div>
+  </div> <!-- /container -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script src="/monik.js"></script>
+</body>
+</html>
