@@ -1,0 +1,19 @@
+Source: python-monik
+Section: python
+Priority: optional
+Maintainer: Zhivotnev Vlad <root@vlad.pro>
+Build-Depends: debhelper (>= 7),
+               dh-python,
+               python-all,
+               python-setuptools,
+               python-flask (>=0.8-1),
+               python-setuptools,
+               python-mysqldb (>=1.2.3-2)
+Standards-Version: 3.9.6
+
+
+Package: python-monik
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}, python-flask (>=0.8-1), python-mysqldb (>=1.2.3-2)
+Description: Simple monitoring tool by inkvizitor
+ Package that provide uwsgi application for monitoring services.
