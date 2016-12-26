@@ -1,5 +1,5 @@
-
-===Setup
+Setup
+-----
 
 Create user and database:
 ```
@@ -20,6 +20,7 @@ Now initialize database:
 MONIK_SETTINGS=/path/to/config monik-initdb
 ```
 
-===Run uwsgi-application
+Run uwsgi-application
+---------------------
 
 See `uwsgi.ini` for example how to configure uwsgi application.
