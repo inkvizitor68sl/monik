@@ -16,7 +16,7 @@ class CheckList(object):
         cursor.execute('''
              UPDATE checks
              SET status=2, description="NODATA"
-             WHERE TIMESTAMPDIFF(SECOND, update_date, NOW()) < ttl
+             WHERE TIMESTAMPDIFF(SECOND, update_date, NOW()) > ttl
                  AND downtime_till < NOW();
         ''')
 
@@ -25,7 +25,7 @@ class CheckList(object):
         cursor = self.db.cursor()
         cursor.execute('''
             SELECT * FROM checks
-            WHERE TIMESTAMPDIFF(SECOND, update_date, NOW()) < ttl
+            WHERE TIMESTAMPDIFF(SECOND, update_date, NOW()) > ttl
                 AND downtime_till < NOW();
         ''')
 
