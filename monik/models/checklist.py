@@ -16,7 +16,8 @@ class CheckList(object):
         cursor.execute('''
              UPDATE checks
              SET status=2, description="NODATA"
-             WHERE update_date + ttl < NOW() AND downtime_till < NOW();
+             WHERE TIMESTAMPDIFF(SECOND, update_date, NOW()) < ttl
+                 AND downtime_till < NOW();
         ''')
 
     def get_nodata(self):
@@ -24,7 +25,8 @@ class CheckList(object):
         cursor = self.db.cursor()
         cursor.execute('''
             SELECT * FROM checks
-            WHERE update_date + ttl < NOW() AND downtime_till < NOW();
+            WHERE TIMESTAMPDIFF(SECOND, update_date, NOW()) < ttl
+                AND downtime_till < NOW();
         ''')
 
         return self._to_dict(

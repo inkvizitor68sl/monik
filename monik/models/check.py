@@ -53,7 +53,7 @@ class Check(object):
         cursor = self.db.cursor()
         cursor.execute('''
             UPDATE checks
-            SET downtime_till = NOW() + %(downtime_till)s
+            SET downtime_till = TIMESTAMPADD(SECOND, %(downtime_till)s, NOW())
             WHERE hostname=%(hostname)s AND checkname=%(checkname)s
         ''', self.escape_args({
             'downtime_till': 0 if int(downtime) < 0 else int(downtime),
