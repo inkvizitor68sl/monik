@@ -22,11 +22,12 @@ class CheckList(object):
 
     def get_nodata(self):
         """Get a list of checks with nodata."""
+        """Confusing name, but it is used only at nodata-cron, so it is so strange"""
         cursor = self.db.cursor()
         cursor.execute('''
             SELECT * FROM checks
             WHERE TIMESTAMPDIFF(SECOND, update_date, NOW()) > ttl
-                AND downtime_till < NOW();
+                AND downtime_till < NOW() AND description != "NO DATA";
         ''')
 
         return self._to_dict(
