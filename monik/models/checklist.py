@@ -15,9 +15,9 @@ class CheckList(object):
         cursor = self.db.cursor()
         cursor.execute('''
              UPDATE checks
-             SET status=2, description="NODATA"
+             SET status=2, description="NO DATA"
              WHERE TIMESTAMPDIFF(SECOND, update_date, NOW()) > ttl
-                 AND downtime_till < NOW();
+                 AND downtime_till < NOW() AND description != "NO DATA";
         ''')
 
     def get_nodata(self):

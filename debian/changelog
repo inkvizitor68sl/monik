@@ -1,8 +1,14 @@
+python-monik (0.4) unstable; urgency=low
+
+  * reworked nodata-cron logic. It is now not invokes status update for checks, where "NO DATA" description already set
+
+ -- Zhivotnev Vladislav <root@vlad.pro>  Tue, 27 Dec 2016 19:51:28 +0300
+
 python-monik (0.3) unstable; urgency=low
 
   * really fixing /cron-nodata
 
- -- Zhivotnev Vladislav <inkvizitor68sl@yandex-team.ru>  Tue, 27 Dec 2016 18:04:15 +0300
+ -- Zhivotnev Vladislav <root@vlad.pro>  Tue, 27 Dec 2016 18:04:15 +0300
 
 python-monik (0.2) unstable; urgency=low
 
