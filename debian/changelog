@@ -1,3 +1,9 @@
+python-monik (0.2) unstable; urgency=low
+
+  * fixing /cron-nodata
+
+ -- Zhivotnev Vladislav <root@vlad.pro>  Tue, 27 Dec 2016 16:56:33 +0300
+
 python-monik (0.1) unstable; urgency=medium
 
   * Initial release
