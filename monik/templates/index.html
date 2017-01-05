@@ -36,7 +36,7 @@
               <input type="text" class="form-control" id="checkname" name="checkname" value="{{args.checkname}}" placeholder="Check" />
               <input type="hidden" id="critical" name="critical" value="{{args.critical}}" />
             </div>
-            <button type="submit" class="btn btn-default">Поиск</button>
+            <button type="submit" class="btn btn-default">Search</button>
           </form>
           <ul class="nav navbar-nav navbar-right">
             <li {% if not args.critical: %} class="active" {% endif %}><a href="/?">All</a></li>
@@ -52,7 +52,7 @@
       {% if report.data: %}
 
       {% if report.data == 'all ok': %}
-       <div class="col-md-4 col-md-offset-5 centered"><h1>Все хорошо</h1></div>
+       <div class="col-md-4 col-md-offset-5 centered"><h1>All is up</h1></div>
       {% else: %}
       {% if not args.lock: %}
       <button class="btn btn-default btn-primary pull-right" id="set-downtime-btn">Downtime</button>
@@ -91,7 +91,7 @@
       </table>
       {% endif %}
       {% else: %}
-      <div class="col-md-4 col-md-offset-4"><h1>Ничего не найдено</h1></div>
+      <div class="col-md-4 col-md-offset-4"><h1>Nothing found</h1></div>
       {% endif %}
     </div>
   </div> <!-- /container -->
