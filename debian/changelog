@@ -1,3 +1,9 @@
+python-monik (0.6) unstable; urgency=low
+
+  * removed some russian text
+
+ -- Zhivotnev Vladislav <root@vlad.pro>  Thu, 05 Jan 2017 20:22:10 +0300
+
 python-monik (0.5) unstable; urgency=low
 
   * reworking nodata-cron more
