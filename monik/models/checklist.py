@@ -42,14 +42,14 @@ class CheckList(object):
             SELECT * FROM checks
             WHERE downtime_till < NOW() AND status > 0
                 AND notify_types LIKE '%%phone%%'
-                AND hostname LIKE %(hostname)s
-                AND checkname LIKE %(checkname)s
+                AND hostname RLIKE %(hostname)s
+                AND checkname RLIKE %(checkname)s
             ORDER BY status DESC, hostname, checkname
         ''', {
-            'hostname': '%' if hostname is None \
-            else self.db.escape_string(hostname.replace('*', '%')),
-            'checkname': '%' if checkname is None \
-            else self.db.escape_string(checkname.replace('*', '%'))
+            'hostname': '.*' if hostname is None \
+            else self.db.escape_string(hostname),
+            'checkname': '.*' if checkname is None \
+            else self.db.escape_string(checkname)
         })
 
         return self._to_dict(cursor.fetchall())
@@ -59,13 +59,13 @@ class CheckList(object):
         cursor = self.db.cursor()
         cursor.execute('''
             SELECT * FROM checks
-            WHERE hostname LIKE %(hostname)s AND checkname LIKE %(checkname)s
+            WHERE hostname RLIKE %(hostname)s AND checkname RLIKE %(checkname)s
             ORDER BY status DESC, hostname, checkname
         ''', {
-            'hostname': '%' if hostname is None \
-            else self.db.escape_string(hostname.replace('*', '%')),
-            'checkname': '%' if checkname is None \
-            else self.db.escape_string(checkname.replace('*', '%'))
+            'hostname': '.*' if hostname is None \
+            else self.db.escape_string(hostname),
+            'checkname': '.*' if checkname is None \
+            else self.db.escape_string(checkname)
         })
 
         return self._to_dict(cursor.fetchall())

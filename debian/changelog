@@ -1,3 +1,9 @@
+python-monik (0.7) unstable; urgency=low
+
+  * using RLIKE for search (so we can find host1|host2|host3 or something like)
+
+ -- Zhivotnev Vladislav <root@vlad.pro>  Wed, 11 Jan 2017 19:55:55 +0300
+
 python-monik (0.6) unstable; urgency=low
 
   * removed some russian text
