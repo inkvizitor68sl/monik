@@ -44,8 +44,7 @@ class Check(object):
                 hostname=%(hostname)s, checkname=%(checkname)s,
                 status=%(status)s, description=%(description)s,
                 ttl=%(ttl)s, ignorenodata=%(ignorenodata)s,
-                notify_types=%(notify_types)s, update_date=NOW(),
-                downtime_till=NOW();
+                notify_types=%(notify_types)s, update_date=NOW();
         ''', self.escape_args(params))
 
     def update_downtime(self, host, checkname, downtime):
