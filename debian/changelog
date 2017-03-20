@@ -1,3 +1,9 @@
+python-monik (0.10) unstable; urgency=low
+
+  * fixed more get_nodata, now works.
+
+ -- Zhivotnev Vladislav <root@vlad.pro>  Mon, 20 Mar 2017 19:39:53 +0300
+
 python-monik (0.9) unstable; urgency=low
 
   * fixed get_nodata logic, now it works correctly
