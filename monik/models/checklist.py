@@ -27,7 +27,7 @@ class CheckList(object):
         cursor.execute('''
             SELECT * FROM checks
             WHERE TIMESTAMPDIFF(SECOND, update_date, NOW()) > ttl
-                AND downtime_till < NOW() AND description != "NO DATA";
+                AND downtime_till < NOW() AND description != "NO DATA" AND ignore_nodata = "0";
         ''')
 
         return self._to_dict(
