@@ -24,3 +24,4 @@ Run uwsgi-application
 ---------------------
 
 See `uwsgi.ini` for example how to configure uwsgi application.
+
