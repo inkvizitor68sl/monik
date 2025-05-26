@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """Provide helper for MySQL connection."""
 
+import pymysql
+pymysql.install_as_MySQLdb()
 import MySQLdb
 from flask import g
 
