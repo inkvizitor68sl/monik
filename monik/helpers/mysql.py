@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Provide helper for MySQL connection."""
 
-from __future__ import absolute_import
+
 import MySQLdb
 
 try:

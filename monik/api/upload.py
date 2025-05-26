@@ -29,7 +29,7 @@ def upload():
 
 
 def _update_with_defaults(params, defaults):
-    for key, value in defaults.items():
+    for key, value in list(defaults.items()):
         if key not in params:
             params[key] = value
     return params
@@ -39,8 +39,8 @@ def _get_upload_params(search):
     """Return a list of params for check."""
     kwargs = {}
 
-    search_fields = CheckModel.DEFAULTS.keys()
-    for key, value in search.items():
+    search_fields = list(CheckModel.DEFAULTS.keys())
+    for key, value in list(search.items()):
         field = key.replace('-', '_').lower().strip()
         if field in search_fields:
             kwargs[field] = value

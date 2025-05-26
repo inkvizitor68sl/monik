@@ -63,7 +63,7 @@ class Check(object):
     def escape_args(self, params):
         """Escape all values in dictionary values."""
         result = {}
-        for key, value in params.items():
+        for key, value in list(params.items()):
             result[key] = self.db.escape_string(value) \
-                    if isinstance(value, (str, unicode)) else value
+                    if isinstance(value, str) else value
         return result

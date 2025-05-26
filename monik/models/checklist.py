@@ -81,7 +81,7 @@ class CheckList(object):
         kwargs = []
         for option in options:
             arg = {}
-            for key, value in option.items():
+            for key, value in list(option.items()):
                 arg[key] = str(value)
                 if key in rewrite:
                     arg[key] = rewrite[key]

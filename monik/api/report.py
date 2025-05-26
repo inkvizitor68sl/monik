@@ -39,7 +39,7 @@ def _get_report_params(params):
         'checkname': None
     }
 
-    for arg in kwargs.keys():
+    for arg in list(kwargs.keys()):
         if params.get(arg, None):
             kwargs[arg] = params[arg]
 
