@@ -1,14 +1,8 @@
 # -*- coding: utf-8 -*-
 """Provide helper for MySQL connection."""
 
-
 import MySQLdb
-
-try:
-    from flask import _app_ctx_stack as _ctx_stack
-except ImportError:
-    from flask import _request_ctx_stack as _ctx_stack
-
+from flask import g
 
 class MySQL(object):
     """MySQL Flask adapter."""
@@ -35,60 +29,39 @@ class MySQL(object):
         self.app.config.setdefault('MYSQL_SQL_MODE', None)
         self.app.config.setdefault('MYSQL_CURSORCLASS', None)
 
-        # Flask 0.9 or later
-        if hasattr(app, 'teardown_appcontext'):
-            self.app.teardown_request(self.teardown_request)
-        # Flask 0.7 to 0.8
-        elif hasattr(app, 'teardown_request'):
-            self.app.teardown_request(self.teardown_request)
-        # Older versions
-        else:
-            self.app.after_request(self.teardown_request)
+        app.teardown_appcontext(self.teardown_request)
 
     @property
     def connect(self):
         """Return a MySQLdb connection."""
         kwargs = {}
-        if self.app.config['MYSQL_HOST']:
-            kwargs['host'] = self.app.config['MYSQL_HOST']
+        cfg = self.app.config
 
-        if self.app.config['MYSQL_USER']:
-            kwargs['user'] = self.app.config['MYSQL_USER']
-
-        if self.app.config['MYSQL_PASSWORD']:
-            kwargs['passwd'] = self.app.config['MYSQL_PASSWORD']
-
-        if self.app.config['MYSQL_DB']:
-            kwargs['db'] = self.app.config['MYSQL_DB']
-
-        if self.app.config['MYSQL_PORT']:
-            kwargs['port'] = self.app.config['MYSQL_PORT']
-
-        if self.app.config['MYSQL_UNIX_SOCKET']:
-            kwargs['unix_socket'] = self.app.config['MYSQL_UNIX_SOCKET']
-
-        if self.app.config['MYSQL_CONNECT_TIMEOUT']:
-            kwargs['connect_timeout'] = \
-                self.app.config['MYSQL_CONNECT_TIMEOUT']
-
-        if self.app.config['MYSQL_READ_DEFAULT_FILE']:
-            kwargs['read_default_file'] = \
-                self.app.config['MYSQL_READ_DEFAULT_FILE']
-
-        if self.app.config['MYSQL_USE_UNICODE']:
-            kwargs['use_unicode'] = self.app.config['MYSQL_USE_UNICODE']
-
-        if self.app.config['MYSQL_CHARSET']:
-            kwargs['charset'] = self.app.config['MYSQL_CHARSET']
-
-        if self.app.config['MYSQL_SQL_MODE']:
-            kwargs['sql_mode'] = self.app.config['MYSQL_SQL_MODE']
-
-        if self.app.config['MYSQL_CURSORCLASS']:
+        if cfg['MYSQL_HOST']:
+            kwargs['host'] = cfg['MYSQL_HOST']
+        if cfg['MYSQL_USER']:
+            kwargs['user'] = cfg['MYSQL_USER']
+        if cfg['MYSQL_PASSWORD']:
+            kwargs['passwd'] = cfg['MYSQL_PASSWORD']
+        if cfg['MYSQL_DB']:
+            kwargs['db'] = cfg['MYSQL_DB']
+        if cfg['MYSQL_PORT']:
+            kwargs['port'] = cfg['MYSQL_PORT']
+        if cfg['MYSQL_UNIX_SOCKET']:
+            kwargs['unix_socket'] = cfg['MYSQL_UNIX_SOCKET']
+        if cfg['MYSQL_CONNECT_TIMEOUT']:
+            kwargs['connect_timeout'] = cfg['MYSQL_CONNECT_TIMEOUT']
+        if cfg['MYSQL_READ_DEFAULT_FILE']:
+            kwargs['read_default_file'] = cfg['MYSQL_READ_DEFAULT_FILE']
+        if cfg['MYSQL_USE_UNICODE']:
+            kwargs['use_unicode'] = cfg['MYSQL_USE_UNICODE']
+        if cfg['MYSQL_CHARSET']:
+            kwargs['charset'] = cfg['MYSQL_CHARSET']
+        if cfg['MYSQL_SQL_MODE']:
+            kwargs['sql_mode'] = cfg['MYSQL_SQL_MODE']
+        if cfg['MYSQL_CURSORCLASS']:
             from MySQLdb import cursors
-            kwargs['cursorclass'] = getattr(
-                cursors, self.app.config['MYSQL_CURSORCLASS']
-            )
+            kwargs['cursorclass'] = getattr(cursors, cfg['MYSQL_CURSORCLASS'])
 
         connect = MySQLdb.connect(**kwargs)
         connect.autocommit(True)
@@ -97,16 +70,14 @@ class MySQL(object):
     @property
     def database(self):
         """Return mysql database."""
-        ctx = _ctx_stack.top
-        if ctx is not None:
-            if not hasattr(ctx, "mysql_db"):
-                ctx.mysql_db = self.connect
-            return ctx.mysql_db
+        if not hasattr(g, 'mysql_db'):
+            g.mysql_db = self.connect
+        return g.mysql_db
 
     def teardown_request(self, exception):
-        """Close on request close connection."""
-        ctx = _ctx_stack.top
-        if hasattr(ctx, "mysql_db"):
-            ctx.mysql_db.close()
+        """Close the DB connection at request end."""
+        db = g.pop('mysql_db', None)
+        if db is not None:
+            db.close()
 
 DB = MySQL()

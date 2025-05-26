@@ -23,6 +23,7 @@ def upload():
         check.create_update(_update_with_defaults(params, check.DEFAULTS))
 
     except Exception as error:
+        import traceback; print(traceback.format_exc())
         flask.abort(500, '{}'.format(error))
 
     return flask.jsonify({'success': True})

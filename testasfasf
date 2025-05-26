@@ -1,0 +1,1 @@
+MONIK_SETTINGS=/root/monik/example.conf PYTHONPATH=. pytest
