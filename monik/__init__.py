@@ -8,4 +8,3 @@ __version__ = '0.1'
 
 if sys.version_info.major < 3:
     importlib.reload(sys)
-sys.setdefaultencoding('utf-8')
